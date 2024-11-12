@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>token.en</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #token-display {
+            font-size: 1.5em;
+            margin: 20px;
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>token</h1>
+    <button onclick="generateToken()">Generate Token</button>
+    <div id="token-display">Press the button to get a token</div>
+
+    <script>
+        // Define the 50 tokens
+        const tokens = [
+            '0ok1tIDOXdGJDfLR6s1QinzhZJyqCGkTXGrha8HHNONtTUxuc1',
+            'wn5dhisGAt2IajbhW5cKZSTGbBq2vz71e0KA3yHxkawjt0oBZK',
+            'abc123abc123abc123abc123abc123abc123abc123abc123ab',
+            'xyz456xyz456xyz456xyz456xyz456xyz456xyz456xyz456xz',
+            '1ok9pIDYXdGJDfLR6s1QinzhZJyqCGkTXGrha9LLNONtTUxbc2',
+            'wn6dfjsGAt2IajbhW5cKZSTGbBq2v071e0KB3yHxjgjl0oAZK',
+            '1bc456abc456abc456abc456abc456abc456abc456abc456ab',
+            'yzc789yzc789yzc789yzc789yzc789yzc789yzc789yzc789yz',
+            '9mk1tBDOXeGJlfUR6s2LinziZjzrCFkTXGrjb8JJMNNtTUzvc1',
+            'wp6dhjtHAt2AbjbhW4dLZSTGdCq2v871e0KZ3yAxkajht0pAZJ',
+            'yzd123abc123yzc789abc123abc123yzc456yzc789abc789xy',
+            '1ok3pFDZXdKJfBR5s0QjnzhZJyzCHfTYGrla9JLMNOtTUxuc7',
+            'ml3dxhsGDt2XjbhlW5zCZqTGjCq5v451e1KA6bHxkzvjt0oAZQ',
+            'abf789abf789abf789abf789abf789abf789abf789abf789ab',
+            '0mz1tEXAXdGJJfKR6s1LinzjZqzCGkUXGrha8HZNONtRUxsc9',
+            'wn5dgitGAt2KajbhW2lKZSTGbBr2v471e0KE2yJxkfgjt1oBYJ',
+            'yzg123abc123yzc789abc123yzc456yzc789yzc789yzc456yy',
+            '4ok7pIDKXdGJDfZR6s2HinzjZJyqCHkTXGraz8LHMONtVTxdc4',
+            'wm6dnjsGAt2MajbhW7jNZSTHbFq3v471f0KP3yLxlxjt2oBZL',
+            'abg999abg999abg999abg999abg999abg999abg999abg999ab',
+            '1ok8tIDOXdGLDfLR7s1SinzhZJyqCGmTXGzha8XHONtTUxuc2',
+            'wm4dhjtGAt2XjbhlW6bLZSTHbGq3v081f0KN4yHxlajt3oAZL',
+            '1bc999abc999abc999abc999abc999abc999abc999abc999ab',
+            'yzf123yzf123yzf123yzf123yzf123yzf123yzf123yzf123yz',
+            '2lk1tBDOXeGJlfYR6s5PinziZjzrCJkTXGrjb9KLMONtUUzvd2',
+            'wp7dhktHAt3AbjclW5lMZSTHcCq2v881f0LZ4zAxkajhu0pAZJ',
+            'yzc123xyz123yzf789xyz123xyz123yzf456yzf789xyz789xy',
+            '1ok9pFDOXdJJfBR6s1HinzjZjzCHfTXGrka9KLMNOtTUzvc8',
+            'nl3dylsGEt4XkbmlW5vCZqTHkCq6v451e2LA7bHykzvjt4oAZR',
+            'aaf999aaf999aaf999aaf999aaf999aaf999aaf999aaf999ab',
+            '0mz1vEXAXdFJJfKR7t1MinzkZqzCKmUXGria9HZQONtSUxsc5',
+            'wo5dgitHAt2MabhlW2oKZSTHbCr3v071g0LE2yLxlfgjt3oBZA',
+            'yza123abc123yza789abc123yza456yza789abc789xy',
+            '1pk9zIDKXdGLDfHR6t2JinzlZJyqCHmTXGrja9YLNONtVTxdc5',
+            'wn6dbjtGEt3KajbmW7iNZTGbFr3v481f1KP4yJxlajt6oBYM',
+            'abg111abg111abg111abg111abg111abg111abg111abg111ab',
+            '0jk1tYDOXdGJDfHR6s1JinzlZjzCHmUXGrha8LKNONtUUzuc7',
+            'wl6dbjtGAt3XjchW8jLZSTHbBq5v191g0KO3yHxlajt4oBXL',
+            'yzd789abc789yzc123yzc789yzc456yzc123yzc456yzc789yz',
+            '1lk4tIDOXdGLDfKR8u1PinzkZJyqCHmTXGrja9LMNONtTTzdc8',
+            'wm7dmjtHAt4OjbhlW9zCZSTHbGq4v381h1KP4yLxlajt3oAZN',
+            'abc777abc777abc777abc777abc777abc777abc777abc777ab',
+            '3mz1tEXBXeGJJfLR9s3QinzjZkzCHkUXGrja8HZONtUUzcc6',
+            'wn5dyjtGAt5KjbhlW8yKZSTGbCq4v091h1KA3yHxlajt3oAZL',
+            'abg333abg333abg333abg333abg333abg333abg333abg333ab',
+            '0ok1fBKOXdGJDfLR7s1PinzhZjzCGkTXGria8XMONtVVxuc2',
+            'wn4dhjtHAt6MjbhlW9bNZSTGcBq5v471g0KP5yHxlajt2oBZJ',
+            'yzf111yzf111yzf111yzf111yzf111yzf111yzf111yzf111yz',
+            '2lk1tIDGXdGJlfLR9u4CinzkZqyCGmUXGrja8HZQONtTUzsc3',
+            'am6dhktHAt6AbjbhW2dLZSTGcBq6v081f0KZ3yAxlajt3oBZJ'
+        ];
+
+        // Function to generate a random token
+        function generateToken() {
+            // Pick a random token from the array
+            const randomToken = tokens[Math.floor(Math.random() * tokens.length)];
+            // Display the token
+            document.getElementById('token-display').innerText = randomToken;
+        }
+    </script>
+
+</body>
+</html>
